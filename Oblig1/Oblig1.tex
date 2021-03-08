@@ -1,0 +1,50 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\begin{document}
+\title{IN3020 Assignment 1}
+\author{Espen Lønes}
+\date{\today}
+\maketitle
+\ \\
+Exercise 1)\\
+a)
+\begin{verbatim}
+SELECT s.Course_number, s.Semester, s.Year, COUNT(gr.Student_number)
+FROM Section s
+INNER JOIN Grade_Report gr USING(Section_Identifier)
+WHERE s.Instructor = 'King'
+GROUP BY s.Course_number, s.Semester, s.Year;
+\end{verbatim}
+b)
+\begin{verbatim}
+SELECT st.Name, st.Major
+FROM Student st
+INNER JOIN Grade_Report gr USING(Student_number)
+GROUP BY st.Student_number, st.Name, st.Major
+HAVING COUNT(CASE WHEN gr.Grade <> 'A') = 0;
+\end{verbatim}
+c)
+\begin{verbatim}
+INSERT INTO Student
+VALUES ('Johnson', '25', '1', 'MATH');
+\end{verbatim}
+d)
+\begin{verbatim}
+UPDATE Student
+SET Class = '2'
+WHERE Name = 'Smith';
+\end{verbatim}
+\newpage
+\ \\
+e)
+\begin{verbatim}
+DELETE FROM Student WHERE Name = 'Smith' AND Student_number = '17';
+DELETE FROM Grade_Report WHERE Student_number = '17';
+\end{verbatim}
+\ \\
+Exercise 2)\\
+2.1)\\
+\ \\
+
+\end{document}
