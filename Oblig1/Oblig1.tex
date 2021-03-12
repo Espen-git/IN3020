@@ -46,6 +46,9 @@ DELETE FROM Grade_Report WHERE Student_number = '17';
 Exercise 2)\\
 2.1)\\
 \ \\
+\includegraphics[scale=0.5]{"2_1.png"}\\
+BDAs, casual users and Application programmers/parametric users. Send respectively optimised/compiled DDL statements, Queries and DML statements to the execution manager. In return the execution manager send back the relevant answer (for queries example a table).\\
+\\
 \textbf{Execution manager:}\\
 Reads tuples from memory and is given administrative commands, executable query plans and transactions.\\
 Transaction processing involves concurrency control, log manager, backup, manager and recovery manager.\\
@@ -66,12 +69,12 @@ Logging updates of database for recovery purposes.\\ Also used for synchronizati
 \\  
 \textbf{Backup manager:}\\
 Used to create database backups in case a recovery is needed.\\
-\\
-\newpage
 \ \\
 \textbf{Recovery manager:}\\
 Recovers the database to a stable state if something went wrong. Using either log or backup.\\
 \\
+\newpage
+\ \\
 2.2)\\
 \\
 The central components in a DBMS are the components that manage their racecourses directly down to the operating system. These are system buffer manager, lock component and log component. The high level components are those that need the central components as prerequisites. Like transaction management, access path management, sorting component etc.\\  
@@ -115,14 +118,16 @@ An inverted index is used to access all relevant document ID's form a keyword. T
 \\
 Overflow block(s) can be used to efficiently handle insertion in an ordered file.\\
 \\
+\newpage
+\ \\
 Exercise 4)\\
 4.1)\\
+a)\\
 \\
 We have:\\
 \\
 Purchase(A, B, C)\\
 Supply(A, D, F)\\
-\\
 \begin{verbatim}
 SELECT P.C
 FROM Purchase P
@@ -200,12 +205,14 @@ And finally $\pi_L(\sigma_C(R)) = \pi_L(\sigma_C(\pi_M(R)))$. If M contains attr
 \pi_{P.A,\ P.C}[\rho_P(Purchase)]\ \bowtie\ \pi_{S.A}[\sigma_{S.D > 0}(\rho_S(Suply))])
 $$
 \\
+\newpage
+\ \\
 c)\\
 \\
 One thing is that in the optimized version we selection and projection on the tables before the join/product. Furthermore in the optimized version we do an natural join while the original did an cross product which is makes a much bigger intermediate table.\\
 \\
 4.2)\\
-a)\\
+a)
 $$
 \pi_M(\sigma_{<c> \wedge <d>}(P \bowtie Q \bowtie R))
 \iff
@@ -220,11 +227,27 @@ Because natural join is associative. A is only common attribute between P and Q.
 \\
 b)\\
 \\
-I think the expression to the right is the most efficient because, by doing selection and projection before the joins. We (if selection removes a good amount of tuples) greatly decrease the number of comparisons done in during the joins. (aka. the intermediate tables are smaller)\\
+I think the expression to the right is the most efficient because, by doing selection and projection before the joins. We (if selection removes a good amount of tuples) greatly decrease the number of comparisons done during the joins. (aka. the intermediate tables are smaller)\\
 \\
+\newpage
+\ \\
 Exercise 5)\\
 5.1)\\
 \\
+\includegraphics[scale=0.5]{"5_1.png"}\\
+\\
+\textbf{Parse} translates an SQL query into an equivalent parse tree.\\
+\textbf{Convert} further translates the parse tree into an logical query plan (RA expression).\\
+\textbf{Apply laws} uses RA laws to manipulate the LQP into multiple (usually) improved LQPs\\
+\textbf{Estimate size} uses statistics and information about the data/database to quickly estimate how large the intermediate tables are (smaller = better)\\
+\newpage
+\ \\
+\textbf{Construct physical plans} takes the best LQPs and makes physical query plans for it. PQPs are execution plans using concrete algorithms for the different parts or the query.\\
+\textbf{Estimate cost} calculates an estimate of how long it will take to run the different PQPs.\\
+\textbf{Chose best} choses the best PQP\\
+\textbf{Execute} then runs the PQP and outputs the result. It also stores statistics about the query to be used for estimation on later queries.\\     
+\newpage
+\ \\
 5.2)\\
 a)
 \begin{verbatim}
@@ -244,7 +267,8 @@ $\\
 c)\\
 \includegraphics[scale=0.5]{"5c.png"}
 \\
-\\
+\newpage
+\ \\
 d)\\
 \\
 Split the selection and push down each part.\\
@@ -254,9 +278,18 @@ $
 \sigma_{C.Course\_name = 'Database Systems'}(\rho_C(Course)) \bowtie \sigma_{S.Year \geq 10}(\rho_S(Section)))
 $\\
 \\
-\includegraphics[scale=0.5]{"5d.png"}\\
+\includegraphics[scale=0.47]{"5d.png"}\\
 \\
 e)\\
 \\
-
+There is no change in the projection between the two solutions, so the tuples have constant length.
+The only difference is that the two selections are done before the join. Assuming only one course with the name 'Databese Systems' selection on Course will do $Tup(Course)$ comparisons and give result of size one tuple. Assuming a course can go max two times per year (fall and spring semester). The size of the result of the selection on Section will be at most $(current\ year - 2010)*2$ number of tuples. After having done $Tup(Section)$ comparisons. Then a natural join of the two results does max $(current\ year - 2010)*2$ comparisons.\\
+\\
+Giving us a total of $Tup(Course) + Tup(Section) + (current\ year - 2010)*2$ comparisons done.\\
+\\
+Now to look at the 'original' tree. Here we do the natural join first. Giving us a max of $Tup(Course) * Tup(Section)$ comparisons. Giving a result table of size $Tup(Section)$. The two selection will have to do $Tup(Section)$ comparisons or more.\\
+\\
+Giving a total of $Tup(Course) * Tup(Section) + Tup(section)$ comparisons.\\
+\\
+Comparing the two totals we see that for reasonably sized original tables the 'improved' tree does a much smaller amount of comparisons and has smaller intermediate tables. So the 'improved' tree is really improved.  
 \end{document}
